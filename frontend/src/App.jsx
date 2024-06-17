@@ -8,6 +8,7 @@ import About from './pages/About';
 import LogIn from './pages/LogIn';
 import User from './pages/User';
 import SignUp from './pages/SignUp';
+import RequireAuth from './HOF/RequireAuth';
 
 function App() {
   const [count, setCount] = useState(0)
@@ -17,9 +18,9 @@ function App() {
      <Header>Welcome to the app</Header>
      <Navbar/>
      <Routes>
-        <Route path='/' element={<Homepage/>}/>
+        <Route path='/' element={<RequireAuth> <Homepage/> </RequireAuth>}/>
         <Route path='/about' element={<About/>}/>
-        <Route path='/user' element={<User/>}/>
+        <Route path='/user' element={<RequireAuth><User/></RequireAuth>}/>
         <Route path='/login' element={<LogIn/>}/>
         <Route path='/signup' element={<SignUp/>}/>
      </Routes>

@@ -6,10 +6,11 @@ import styled from 'styled-components';
 
 const Homepage = () => {
     const [list,setList] = useState([]);
+    const [isLoading,setIsLoading] = useState(true);
     const [toggleInput,setToggleInput] = useState(false);
     const [editId,setEditId] = useState(null);
     const[editValue,setEditValue]=useState("");
-    console.log(editValue);
+    
 
 
     const handleEdit = async(id) => {
@@ -37,18 +38,20 @@ const Homepage = () => {
         const data = await axios.get('http://localhost:8080/data');
         const res = data.data;
         setList(res);
+        setIsLoading(false);
       }catch(e){
         throw e.message;
       }
     }
     useEffect(() =>{
-      getData();
+      setTimeout(()=>{getData()},500)
+      
     },[])
   return (
     <MainDiv>
       <h3>User's List</h3>
       <ListDiv>
-          {list?.map((user)=>(<div key={user.id}><p style={{fontSize:"1rem"}}><span style={{color:'tomato'}}>Name</span>:{user.first_name} <span>{toggleInput? <button onClick={handleUpdate}>Update</button> :<button onClick={()=>handleEdit(user.id)}>Edit</button> }{toggleInput&& editId==user.id ? <input type='text' value={editValue} onChange={(e)=>{
+          {isLoading ? <h3>Loading</h3> : list?.map((user)=>(<div key={user.id}><p style={{fontSize:"1rem"}}><span style={{color:'tomato'}}>Name</span>:{user.first_name} <span>{toggleInput && editId==user.id? <button onClick={handleUpdate}>Update</button> :<button onClick={()=>handleEdit(user.id)}>Edit</button> }{toggleInput&& editId==user.id ? <input type='text' value={editValue} onChange={(e)=>{
             setEditValue(e.target.value)}}  />:null}</span></p> </div>))}
       </ListDiv>
     </MainDiv>
